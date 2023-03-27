@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Continuous Geolocation with OpenLayers</title>
+  <style>
+  html, body, #map {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css">
+  <script src="	https://unpkg.com/openlayers@4.6.5/dist/ol.js"></script>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <script>
+    var map = new ol.Map({
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([0, 0]),
+        zoom: 17
+      })
+    });
+
+    /* Vi tri dinh vi*/
+    var marker = new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.fromLonLat([0, 0]))
+    });
+
+    var vectorSource_Location = new ol.source.Vector({
+      features: [marker]
+    });
+
+    var vectorLayer = new ol.layer.Vector({
+      source: vectorSource_Location,
+      style: new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 5,
+          fill: new ol.style.Fill({
+            color: 'red' // định nghĩa màu sắc của điểm
+          })
+        })
+      }),
+    });
+
+    /* Streets lay tu Geoserver */
+    var vectorSource_Streets = new ol.source.TileWMS({
+      url: 'https://geoserver.ctu.edu.vn/geoserver/ctu/wfs',
+      params: { 'LAYERS': 'ctu:local_streets' },
+      serverType: 'geoserver'
+    });
+    var layer_Streets = new ol.layer.Tile({
+      source: vectorSource_Streets,
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'red',
+          width: 1,
+        }),
+        fill: new ol.style.Fill({
+          color: 'blue',
+        }),
+      }),
+    });
+
+    map.addLayer(vectorLayer);
+    map.addLayer(layer_Streets);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(function (position) {
+        var pos = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]);
+
+        map.getView().setCenter(pos);
+        console.log(pos);
+        marker.setGeometry(new ol.geom.Point(pos));
+      }, function (error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+            alert("Người sử dụng từ chối cho xác định vị trí.")
+            break;
+            case error.POSITION_UNAVAILABLE:
+              alert("Thông tin vị trí không có sẵn.")
+            break;
+            case error.TIMEOUT:
+              alert("Yêu cầu vị trí người dùng vượt quá thời gian quy định.")
+            break;
+            case error.UNKNOWN_ERROR:
+              alert("Một lỗi xảy ra không rõ nguyên nhân.")
+            break;
+          }
+      });
+    } else {
+      alert('Your browser does not support geolocation.');
+    }
+  </script>
+</body>
+
+</html>

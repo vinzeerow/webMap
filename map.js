@@ -27,249 +27,248 @@ function layer_Marker() {
     return vectorLayer;
 }
 
-function addLayerStreets() {
-    /* Streets lay tu Geoserver */
-    var layer, source, vector;
-    source = new ol.source.Vector({});
-    vector = new ol.layer.Vector({
-        source: source,
-        style: new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: '#6157ff',
-                width: 1,
-            }),
-            fill: new ol.style.Fill({
-                color: 'blue',
-            }),
-        }),
-    });
-    map.addLayer(vector);
-    $.ajax({
-        type: "GET",
-        url: url + "/streets",
-        success: function (data) {
-            // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
-            var features = new ol.format.GeoJSON().readFeatures(JSON.stringify(data));
-            source.addFeatures(features);
+// function addLayerStreets() {
+//     /* Streets lay tu Geoserver */
+//     var layer, source, vector;
+//     source = new ol.source.Vector({});
+//     vector = new ol.layer.Vector({
+//         source: source,
+//         style: new ol.style.Style({
+//             stroke: new ol.style.Stroke({
+//                 color: '#6157ff',
+//                 width: 1,
+//             }),
+//             fill: new ol.style.Fill({
+//                 color: 'blue',
+//             }),
+//         }),
+//     });
+//     map.addLayer(vector);
+//     $.ajax({
+//         type: "GET",
+//         url: url + "/streets",
+//         success: function (data) {
+//             // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
+//             var features = new ol.format.GeoJSON().readFeatures(JSON.stringify(data));
+//             source.addFeatures(features);
 
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi khi yêu cầu không thành công
-            console.log("Error: " + error);
-        }
-    });
-}
-function addLayerTrees() {
-    /* Streets lay tu Geoserver */
-    $.ajax({
-        type: "GET",
-        url: url + "/trees",
-        success: function (data) {
-            // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
-            data.features.map((item) => {
-                var layer, source, vector;
-                source = new ol.source.Vector({});
-                vector = new ol.layer.Vector({
-                    source: source,
-                    style: new ol.style.Style({
-                        image: new ol.style.Circle({
-                            radius: 3,
-                            fill: new ol.style.Fill({
-                                color: 'green' // định nghĩa màu sắc của điểm
-                            })
-                        })
-                    }),
-                });
-                map.addLayer(vector);
-                var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
-                source.addFeatures(feature);
-                // vector.getStyle().getText().setText(item.properties.name);
-            })
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi khi yêu cầu không thành công
-            console.log("Error: " + error);
-        }
-    });
-}
+//         },
+//         error: function (xhr, status, error) {
+//             // Xử lý lỗi khi yêu cầu không thành công
+//             console.log("Error: " + error);
+//         }
+//     });
+// }
+// function addLayerTrees() {
+//     /* Streets lay tu Geoserver */
+//     $.ajax({
+//         type: "GET",
+//         url: url + "/trees",
+//         success: function (data) {
+//             // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
+//             data.features.map((item) => {
+//                 var layer, source, vector;
+//                 source = new ol.source.Vector({});
+//                 vector = new ol.layer.Vector({
+//                     source: source,
+//                     style: new ol.style.Style({
+//                         image: new ol.style.Circle({
+//                             radius: 3,
+//                             fill: new ol.style.Fill({
+//                                 color: 'green' // định nghĩa màu sắc của điểm
+//                             })
+//                         })
+//                     }),
+//                 });
+//                 map.addLayer(vector);
+//                 var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
+//                 source.addFeatures(feature);
+//                 // vector.getStyle().getText().setText(item.properties.name);
+//             })
+//         },
+//         error: function (xhr, status, error) {
+//             // Xử lý lỗi khi yêu cầu không thành công
+//             console.log("Error: " + error);
+//         }
+//     });
+// }
 
-function addLayerUnits() {
-    /* Streets lay tu Geoserver */
-    $.ajax({
-        type: "GET",
-        url: url + "/units",
-        success: function (data) {
-            // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
-            data.features.map((item,idx) => {
-                var layer, source, vector;
-                source = new ol.source.Vector({});
-                vector = new ol.layer.Vector({
-                    source: source,
-                    style: new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: '#02598C',
-                            width: 0.5,
-                        }),
-                        fill: new ol.style.Fill({
-                            color: '#fff9d2',
-                        }),
-                        text: new ol.style.Text({
-                            // text: "ABC",
-                            font: 'bold 10px Arial',
-                            textAlign: 'center',
-                            textBaseline: 'middle',
-                            offsetX: 0,
-                            offsetY: 0,
-                            fill: new ol.style.Fill({ color: 'red' }),
-                        }),
+// function addLayerUnits() {
+//     /* Streets lay tu Geoserver */
+//     $.ajax({
+//         type: "GET",
+//         url: url + "/units",
+//         success: function (data) {
+//             // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
+//             data.features.map((item, idx) => {
+//                 var layer, source, vector;
+//                 source = new ol.source.Vector({});
+//                 vector = new ol.layer.Vector({
+//                     source: source,
+//                     style: new ol.style.Style({
+//                         stroke: new ol.style.Stroke({
+//                             color: '#02598C',
+//                             width: 0.5,
+//                         }),
+//                         fill: new ol.style.Fill({
+//                             color: '#fff9d2',
+//                         }),
+//                         text: new ol.style.Text({
+//                             // text: "ABC",
+//                             font: 'bold 10px Arial',
+//                             textAlign: 'center',
+//                             textBaseline: 'middle',
+//                             offsetX: 0,
+//                             offsetY: 0,
+//                             fill: new ol.style.Fill({ color: 'red' }),
+//                         }),
 
-                    }),
-                });
-                map.addLayer(vector);
-                var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
-                source.addFeatures(feature);
-                
-                vector.getStyle().getText().setText(item.properties.name);
-            })
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi khi yêu cầu không thành công
-            console.log("Error: " + error);
-        }
-    });
-}
-function addLayerUnitsText() {
-    /* Streets lay tu Geoserver */
-    $.ajax({
-        type: "GET",
-        url: url + "/units",
-        success: function (data) {
-            // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
-            data.features.map((item,idx) => {
-                var layer, source, vector;
-                source = new ol.source.Vector({});
-                vector = new ol.layer.Vector({
-                    source: source,
-                    zIndex: 9,
-                    style: new ol.style.Style({
-                        // stroke: new ol.style.Stroke({
-                        //     color: '#02598C',
-                        //     width: 1,
-                        // }),
-                        // fill: new ol.style.Fill({
-                        //     color: '#fff9d2',
-                        // }),
-                        text: new ol.style.Text({
-                            // text: "ABC",
-                            font: 'bold 10px Arial',
-                            textAlign: 'center',
-                            textBaseline: 'middle',
-                            offsetX: 0,
-                            offsetY: 0,
-                            fill: new ol.style.Fill({ color: 'red' }),
-                        }),
+//                     }),
+//                 });
+//                 map.addLayer(vector);
+//                 var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
+//                 source.addFeatures(feature);
 
-                    }),
-                });
-                map.addLayer(vector);
-                var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
-                source.addFeatures(feature);
-                
-                vector.getStyle().getText().setText(item.properties.name);
-            })
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi khi yêu cầu không thành công
-            console.log("Error: " + error);
-        }
-    });
-}
-function addLayerRooms() {
-    /* Streets lay tu Geoserver */
-    $.ajax({
-        type: "GET",
-        url: url + "/rooms",
-        success: function (data) {
-            // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
-            data.features.map((item,idx) => {
-                var layer, source, vector;            
-                source = new ol.source.Vector({});
-                vector = new ol.layer.Vector({
-                    source: source,
-                    
-                    style: new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: '#02598C',
-                            width: 0.5,
-                        }),
-                        fill: new ol.style.Fill({
-                            color: '#c8e3f6',
-                        }),
-                        text: new ol.style.Text({
-                            // text: "ABC",
-                            font: 'bold 10px Arial',
-                            textAlign: 'center',
-                            textBaseline: 'middle',
-                            offsetX: 0,
-                            offsetY: 0,
-                            fill: new ol.style.Fill({ color: 'red' }),
-                        }),
-                    }),
-                });
-                map.addLayer(vector);
-                var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
-                source.addFeatures(feature);      
-                vector.getStyle().getText().setText(item.properties.roomnamevi);
-            })
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi khi yêu cầu không thành công
-            console.log("Error: " + error);
-        }
-    });
-}
-function addLayerDormitory() {
-    /* Streets lay tu Geoserver */
-    $.ajax({
-        type: "GET",
-        url: url + "/dormitory",
-        success: function (data) {
-            // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
-            data.features.map((item,idx) => {
-                var layer, source, vector;
-                console.log(idx);
-                source = new ol.source.Vector({});
-                vector = new ol.layer.Vector({
-                    source: source,
-                    style: new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: '#02598C',
-                            width: 0.5,
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 0, 255, 0.1)',
-                        }),
-                    }),
-                });
-                map.addLayer(vector);
-                var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
-                source.addFeatures(feature);
-            })
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi khi yêu cầu không thành công
-            console.log("Error: " + error);
-        }
-    });
-}
+//                 vector.getStyle().getText().setText(item.properties.name);
+//             })
+//         },
+//         error: function (xhr, status, error) {
+//             // Xử lý lỗi khi yêu cầu không thành công
+//             console.log("Error: " + error);
+//         }
+//     });
+// }
+// function addLayerUnitsText() {
+//     /* Streets lay tu Geoserver */
+//     $.ajax({
+//         type: "GET",
+//         url: url + "/units",
+//         success: function (data) {
+//             // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
+//             data.features.map((item, idx) => {
+//                 var layer, source, vector;
+//                 source = new ol.source.Vector({});
+//                 vector = new ol.layer.Vector({
+//                     source: source,
+//                     zIndex: 9,
+//                     style: new ol.style.Style({
+//                         // stroke: new ol.style.Stroke({
+//                         //     color: '#02598C',
+//                         //     width: 1,
+//                         // }),
+//                         // fill: new ol.style.Fill({
+//                         //     color: '#fff9d2',
+//                         // }),
+//                         text: new ol.style.Text({
+//                             // text: "ABC",
+//                             font: 'bold 10px Arial',
+//                             textAlign: 'center',
+//                             textBaseline: 'middle',
+//                             offsetX: 0,
+//                             offsetY: 0,
+//                             fill: new ol.style.Fill({ color: 'red' }),
+//                         }),
+
+//                     }),
+//                 });
+//                 map.addLayer(vector);
+//                 var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
+//                 source.addFeatures(feature);
+
+//                 vector.getStyle().getText().setText(item.properties.name);
+//             })
+//         },
+//         error: function (xhr, status, error) {
+//             // Xử lý lỗi khi yêu cầu không thành công
+//             console.log("Error: " + error);
+//         }
+//     });
+// }
+// function addLayerRooms() {
+//     /* Streets lay tu Geoserver */
+//     $.ajax({
+//         type: "GET",
+//         url: url + "/rooms",
+//         success: function (data) {
+//             // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
+//             data.features.map((item, idx) => {
+//                 var layer, source, vector;
+//                 source = new ol.source.Vector({});
+//                 vector = new ol.layer.Vector({
+//                     source: source,
+
+//                     style: new ol.style.Style({
+//                         stroke: new ol.style.Stroke({
+//                             color: '#02598C',
+//                             width: 0.5,
+//                         }),
+//                         fill: new ol.style.Fill({
+//                             color: '#c8e3f6',
+//                         }),
+//                         text: new ol.style.Text({
+//                             // text: "ABC",
+//                             font: 'bold 10px Arial',
+//                             textAlign: 'center',
+//                             textBaseline: 'middle',
+//                             offsetX: 0,
+//                             offsetY: 0,
+//                             fill: new ol.style.Fill({ color: 'red' }),
+//                         }),
+//                     }),
+//                 });
+//                 map.addLayer(vector);
+//                 var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
+//                 source.addFeatures(feature);
+//                 vector.getStyle().getText().setText(item.properties.roomnamevi);
+//             })
+//         },
+//         error: function (xhr, status, error) {
+//             // Xử lý lỗi khi yêu cầu không thành công
+//             console.log("Error: " + error);
+//         }
+//     });
+// }
+// function addLayerDormitory() {
+//     /* Streets lay tu Geoserver */
+//     $.ajax({
+//         type: "GET",
+//         url: url + "/dormitory",
+//         success: function (data) {
+//             // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
+//             data.features.map((item, idx) => {
+//                 var layer, source, vector;
+//                 console.log(idx);
+//                 source = new ol.source.Vector({});
+//                 vector = new ol.layer.Vector({
+//                     source: source,
+//                     style: new ol.style.Style({
+//                         stroke: new ol.style.Stroke({
+//                             color: '#02598C',
+//                             width: 0.5,
+//                         }),
+//                         fill: new ol.style.Fill({
+//                             color: 'rgba(0, 0, 255, 0.1)',
+//                         }),
+//                     }),
+//                 });
+//                 map.addLayer(vector);
+//                 var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
+//                 source.addFeatures(feature);
+//             })
+//         },
+//         error: function (xhr, status, error) {
+//             // Xử lý lỗi khi yêu cầu không thành công
+//             console.log("Error: " + error);
+//         }
+//     });
+// }
 function addLayerSportGround() {
     /* Streets lay tu Geoserver */
-    $.ajax({
-        type: "GET",
-        url: url + "/sport-ground",
-        success: function (data) {
-            // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
-            data.features.map((item,idx) => {
+    fetch(url+"/sport-ground")
+        .then(response => response.json())
+        .then(data => {
+            // xử lý dữ liệu nhận được ở đây
+            data.features.map((item, idx) => {
                 var layer, source, vector;
                 console.log(idx);
                 source = new ol.source.Vector({});
@@ -289,80 +288,42 @@ function addLayerSportGround() {
                 var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
                 source.addFeatures(feature);
             })
-        },
-        error: function (xhr, status, error) {
-            // Xử lý lỗi khi yêu cầu không thành công
-            console.log("Error: " + error);
-        }
-    });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    // $.ajax({
+    //     type: "GET",
+    //     url: url + "/sport-ground",
+    //     success: function (data) {
+    //         // Xử lý dữ liệu JSON để hiển thị các tính năng lên bản đồ của bạn
+    //         data.features.map((item, idx) => {
+    //             var layer, source, vector;
+    //             console.log(idx);
+    //             source = new ol.source.Vector({});
+    //             vector = new ol.layer.Vector({
+    //                 source: source,
+    //                 style: new ol.style.Style({
+    //                     stroke: new ol.style.Stroke({
+    //                         color: '#02598C',
+    //                         width: 0.5,
+    //                     }),
+    //                     fill: new ol.style.Fill({
+    //                         color: '#ddffc9',
+    //                     }),
+    //                 }),
+    //             });
+    //             map.addLayer(vector);
+    //             var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
+    //             source.addFeatures(feature);
+    //         })
+    //     },
+    //     error: function (xhr, status, error) {
+    //         // Xử lý lỗi khi yêu cầu không thành công
+    //         console.log("Error: " + error);
+    //     }
+    // });
 }
-// function layer_Domitory() {
-//     /* Dormitory lay tu Geoserver */
-//     var vectorSource_Domitory = new ol.source.TileWMS({
-//         url: 'https://geoserver.ctu.edu.vn/geoserver/ctu/wfs',
-//         params: { 'LAYERS': 'ctu:dormitory' },
-//         serverType: 'geoserver'
-//     });
-//     var layer_Domitory = new ol.layer.Tile({
-//         source: vectorSource_Domitory,
-//         style: new ol.style.Style({
-//             stroke: new ol.style.Stroke({
-//                 color: 'red',
-//                 width: 1,
-//             }),
-//             fill: new ol.style.Fill({
-//                 color: 'blue',
-//             }),
-//         }),
-//     });
-//     return layer_Domitory;
-// }
-// function layer_Units() {
-
-//     /* Units lay tu Geoserver */
-//     var vectorSource_Units = new ol.source.TileWMS({
-//         url: 'https://geoserver.ctu.edu.vn/geoserver/ctu/wfs',
-//         params: { 'LAYERS': 'ctu:cantho_university_units' },
-//         serverType: 'geoserver'
-//     });
-//     console.log(vectorSource_Units);
-//     var layer_Units = new ol.layer.Tile({
-//         source: vectorSource_Units,
-//         style: new ol.style.Style({
-//             stroke: new ol.style.Stroke({
-//                 color: 'red',
-//                 width: 1,
-//             }),
-//             fill: new ol.style.Fill({
-//                 color: 'blue',
-//             }),
-//         }),
-//     });
-//     return layer_Units;
-// }
-
-// function layer_Rooms() {
-
-//     /* Units lay tu Geoserver */
-//     var vectorSource_Rooms = new ol.source.TileWMS({
-//         url: 'https://geoserver.ctu.edu.vn/geoserver/ctu/wfs',
-//         params: { 'LAYERS': 'ctu:rooms' },
-//         serverType: 'geoserver'
-//     });
-//     var layer_Rooms = new ol.layer.Tile({
-//         source: vectorSource_Rooms,
-//         style: new ol.style.Style({
-//             stroke: new ol.style.Stroke({
-//                 color: 'red',
-//                 width: 1,
-//             }),
-//             fill: new ol.style.Fill({
-//                 color: 'blue',
-//             }),
-//         }),
-//     });
-//     return layer_Rooms;
-// }
 
 function createMap() {
     map = new ol.Map({
@@ -377,12 +338,14 @@ function createMap() {
             zoom: 18
         })
     });
-    addLayerStreets();
-    addLayerUnits();
-    addLayerUnitsText();
+    // addLayerStreets();
+    // addLayerUnits();
+    // addLayerUnitsText();
+
     // addLayerTrees();
-    addLayerRooms();
-    addLayerDormitory();
+    // addLayerRooms();
+    // addLayerDormitory();
+
     addLayerSportGround();
     map.addLayer(layer_Marker());
     return map;
@@ -391,7 +354,7 @@ function checkRequestAccessLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function (position) {
             var pos = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]);
-            
+
             map.getView().setCenter(pos);
             console.log(pos);
             marker.setGeometry(new ol.geom.Point(pos));
@@ -416,7 +379,7 @@ function checkRequestAccessLocation() {
     }
 }
 
-$(document).ready(function () {
-    map = createMap();
-    checkRequestAccessLocation();
-})
+// $(document).ready(function () {
+map = createMap();
+checkRequestAccessLocation();
+// })

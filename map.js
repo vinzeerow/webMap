@@ -1,6 +1,6 @@
 var marker;
 var map;
-var url = "http://10.12.37.207:3000/coordinates";
+var url = "http://192.168.43.195:3000/coordinates";
 
 function layer_Marker() {
     /* Vi tri dinh vi*/

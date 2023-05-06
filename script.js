@@ -253,9 +253,10 @@ $(document).ready(async function () {
     initMap();
     map.addLayer(rooms_layer);
     map.addLayer(marker_layer);
+    testAsyncStorage();
     var dataFromAjax = await getDataRooms();
     checkRequestAccessLocation(dataFromAjax);
     addQuestionInFeature();
     
-    testAsyncStorage();
+    
 })

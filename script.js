@@ -1,6 +1,7 @@
 var url = "http://192.168.43.195:3000/coordinates";
 var map, marker, marker_source, marker_layer, rooms_layer;
 var id_question = [542, 566];
+const account = window.localStorage.getItem('account');
 var questions = [
     {
         id: 542,
@@ -236,4 +237,6 @@ $(document).ready(async function () {
     var dataFromAjax = await getDataRooms();
     checkRequestAccessLocation(dataFromAjax);
     addQuestionInFeature();
+    alert(account);
+    console.log(account);
 })

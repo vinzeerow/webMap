@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Continuous Geolocation with OpenLayers</title>
+    <style>
+        html,
+        body,
+        #map {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css">
+</head>
+
+<body>
+    <div id="map"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="	https://unpkg.com/openlayers@4.6.5/dist/ol.js"></script>
+    <script>
+        var url = "http://192.168.43.195:3000/coordinates";
+        var map, marker, marker_source, marker_layer, rooms_layer;
+
+        function initMap() {
+            /* Khởi tạo map */
+            map = new ol.Map({
+                target: 'map',
+                layers: [],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([0, 0]),
+                    zoom: 18
+                })
+            });
+
+            /* Khởi tạo layer phòng học */
+            rooms_layer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [
+                        new ol.Feature({
+                            geometry: new ol.geom.MultiPolygon([])
+                        })
+                    ]
+                })
+            });
+
+        }
+
+        async function getDataRooms() {
+            let dataFromAjax = null;
+            dataFromAjax = await $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: 'https://geoserver.ctu.edu.vn/geoserver/ctu/wfs?service=WFS&version=1.0.0&request=GetFeature&typename=ctu:room_by_floor&outputFormat=application/json'
+            });
+            var features = new ol.format.GeoJSON().readFeatures(JSON.stringify(dataFromAjax));
+            rooms_layer.getSource().addFeatures(features);
+            return dataFromAjax;
+        }
+        function paintColorFeature(params) {
+            const features = rooms_layer.getSource().getFeatures();
+
+            // Tìm feature có id tương ứng
+            const featureIds = [70, 75, 100];
+            var featurePaintColor = [];
+
+            features.forEach((feature) => {
+                featureIds.forEach(function (featureId) {
+                    if (feature.getProperties().id === featureId) {
+                        featurePaintColor.push(feature);
+                    }
+                });
+            });
+
+            featurePaintColor.forEach((featureColor) => {
+                featureColor.setStyle(new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'red'
+                    })
+                }));
+            })
+        }
+
+        $(document).ready(async function () {
+            initMap();
+            map.addLayer(rooms_layer);
+            var dataFromAjax = await getDataRooms();
+            var pos = ol.proj.fromLonLat([105.769588, 10.030725]);
+            map.getView().setCenter(pos);
+            paintColorFeature();
+        })
+    </script>
+    </head>
+</body>
+
+</html>

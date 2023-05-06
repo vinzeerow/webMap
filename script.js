@@ -253,7 +253,9 @@ $(document).ready(async function () {
     initMap();
     map.addLayer(rooms_layer);
     map.addLayer(marker_layer);
-    testAsyncStorage();
+    // testAsyncStorage();
+    const headers = JSON.parse(window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'GET_HEADERS' })));
+    console.log(headers);
     var dataFromAjax = await getDataRooms();
     checkRequestAccessLocation(dataFromAjax);
     addQuestionInFeature();

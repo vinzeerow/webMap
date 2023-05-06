@@ -212,6 +212,25 @@ function checkRequestAccessLocation(dataFromAjax) {
         alert('Your browser does not support geolocation.');
     }
 }
+function getItem(key) {
+    return new Promise((resolve, reject) => {
+        window.ReactNative.AsyncStorage.getItem(key, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
+async function testAsyncStorage() {
+    const value = await getItem('tendangnhap');
+    console.log(value);
+    alert(value);
+    // console.log(account);
+}
+
 function addQuestionInFeature() {
     map.on('click', function (event) {
         // Lấy danh sách các feature ở vị trí click
@@ -237,6 +256,6 @@ $(document).ready(async function () {
     var dataFromAjax = await getDataRooms();
     checkRequestAccessLocation(dataFromAjax);
     addQuestionInFeature();
-    alert(account);
-    console.log(account);
+    
+    testAsyncStorage();
 })

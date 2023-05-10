@@ -310,7 +310,18 @@ function checkPositionAndFeature(pos) {
                 fill: new ol.style.Fill({
                     color: 'red'
                 })
+                
             }));
+            Swal.fire({
+                title: "An input!",
+                text: "Write something interesting:",
+                input: 'text',
+                showCancelButton: true        
+            }).then((result) => {
+                if (result.value) {
+                    console.log("Result: " + result.value);
+                }
+            })
         }
     });
     var closestPosition = closestFeature.getGeometry().getClosestPoint(pos);
@@ -411,15 +422,7 @@ $(document).ready(async function () {
     getDataRooms();
     checkRequestAccessLocation();
     addQuestionInFeature();
-    swal({
-        title: 'Enter email address',
-        input: 'email'
-      }).then(function (email) {
-        swal({
-          type: 'success',
-          html: 'Your email: ' + email
-        })
-      })
+    
     // const headers = JSON.parse(window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'GET_HEADERS' })));
     // console.log(headers);
     // alert(headers);

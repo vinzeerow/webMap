@@ -2,20 +2,19 @@ var url = "http://192.168.43.195:3000/coordinates";
 var map, marker, marker_source, marker_layer, rooms_layer, units_layer,unitsText_layer,streets_layer,dormitory_layer;
 var id_question = [542, 566];
 const account = window.localStorage.getItem('account');
+let watchId = null;
 var questions = [
     {
-        id: 542,
-        question: "Tại sao ?",
-        answer: "Trả lời",
-        status: true,
-        id_next: 566
+        id: 1506,
+        question: "Hãy giải một dãy chứ sau để tìm ra vị trí kế tiếp: A-B-B-D-/-C-1",
+        answer: "102/C1",
+        status: false,
     },
     {
         id: 566,
         question: "Tại sao ?",
         answer: "Trả lời",
         status: false,
-        id_next: null
     }
 ]
 
@@ -304,31 +303,39 @@ async function getDataDomitory() {
 function checkPositionAndFeature(pos) {
     const closestFeature = rooms_layer.getSource().getClosestFeatureToCoordinate(pos);
     var show = true;
-    questions.forEach(function (question) {
-        if (closestFeature.getProperties().id == question.id) {
+    questions.forEach(function (item) {
+        if (closestFeature.getProperties().id == item.id && !item.status) {
             closestFeature.setStyle(new ol.style.Style({
                 fill: new ol.style.Fill({
                     color: 'red'
                 })
                 
             }));
+            navigator.geolocation.clearWatch(watchId);
             Swal.fire({
-                title: "An input!",
-                text: "Write something interesting:",
+                title: "Vị trí "+ closestFeature.getProperties().id,
+                text: "Câu hỏi:"+ item.question,
                 input: 'text',
                 showCancelButton: true        
             }).then((result) => {
-                if (result.value) {
-                    console.log("Result: " + result.value);
+                if (result.value==item.answer) {
+                    closestFeature.setStyle(new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'green'
+                        })
+                        
+                    }));
+                    item.status=true;
+                    // checkRequestAccessLocation();
                 }
             })
         }
     });
-    var closestPosition = closestFeature.getGeometry().getClosestPoint(pos);
-    console.log("Vị trị của bạn hiện tại gần với feature: ");
-    console.log(closestFeature.getProperties().id);
-    var dis = distance(pos[0], pos[1], closestPosition[0], closestPosition[1]);
-    console.log('Khoảng cách giữa hai vị trí là: ' + dis + ' mét');
+    // var closestPosition = closestFeature.getGeometry().getClosestPoint(pos);
+    // console.log("Vị trị của bạn hiện tại gần với feature: ");
+    // console.log(closestFeature.getProperties().id);
+    // var dis = distance(pos[0], pos[1], closestPosition[0], closestPosition[1]);
+    // console.log('Khoảng cách giữa hai vị trí là: ' + dis + ' mét');
 }
 
 function distance(x1, y1, x2, y2) {
@@ -337,9 +344,9 @@ function distance(x1, y1, x2, y2) {
 
 function checkRequestAccessLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(function (position) {
-            // var pos = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]);
-            var pos = ol.proj.fromLonLat([105.769588, 10.030725]);
+        watchId = navigator.geolocation.watchPosition(function (position) {
+            var pos = ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]);
+            // var pos = ol.proj.fromLonLat([105.769588, 10.030725]);
             map.getView().setCenter(pos);
             checkPositionAndFeature(pos);
             marker.setGeometry(new ol.geom.Point(pos));
@@ -382,8 +389,8 @@ function getItem(key) {
 
 async function testAsyncStorage() {
     const value = await getItem('tendangnhap');
-    console.log(value);
-    alert(value);
+    // console.log(value);
+    // alert(value);
 
 }
 
@@ -395,6 +402,7 @@ function addQuestionInFeature() {
         // Lặp qua danh sách các feature và log ra thông tin tọa độ
         features.forEach(function (feature) {
             console.log(feature.getProperties().id);
+            console.log(feature.getProperties().roomnamevi);
         });
     });
 }

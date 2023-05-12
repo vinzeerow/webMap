@@ -5,7 +5,8 @@ const account = window.localStorage.getItem('account');
 let watchId = null;
 var questions = [
     {
-        id: 1506,
+        // id: 1506,
+        id: 506,
         question: "Hãy giải một dãy chứ sau để tìm ra vị trí kế tiếp: A-B-B-D-/-C-1",
         answer: "102/C1",
         status: false,
@@ -113,6 +114,18 @@ function initMap() {
                 fill: new ol.style.Fill({ color: 'red' }),
             }),
         }),
+        // style: function(feature) {
+        //     const style = new ol.style.Style({
+        //       text: new ol.style.Text({
+        //         text: feature,
+        //         font: 'bold 12px sans-serif',
+        //         fill: new ol.style.Fill({
+        //           color: 'red'
+        //         })
+        //       })
+        //     });
+        //     return style;
+        //   }
     });
     /* Khởi tạo layer khoa */
     units_layer = new ol.layer.Vector({
@@ -230,7 +243,7 @@ function getDataRooms() {
 
                 var feature = new ol.format.GeoJSON().readFeatures(JSON.stringify(item));
                 rooms_layer.getSource().addFeatures(feature);
-                rooms_layer.getStyle().getText().setText(item.properties.roomnamevi);
+                // rooms_layer.getStyle().getText().setText(item.properties.roomnamevi);
                 
             })
         },
@@ -255,13 +268,24 @@ async function getDataUnits() {
     return dataFromAjax;
 }
 async function getDataUnitsText() {
-    const data= await getDataUnits();
-    data.features.map((item,idx)=>{
-        // console.log(item);
-        console.log(units_layer.getSource().getFeatures()[idx]);
-        // console.log(units_layer.getSource().getFeatures()[idx].getStyle().getText());
-        // units_layer.getStyle().getText().setText(item.properties.name);
-    })
+    var features = rooms_layer.getSource().getFeatures();
+    features.forEach((feature) => {
+        console.log(feature);
+        // console.log(feature.getProperties().id);
+        // console.log(feature.getProperties().roomnamevi);
+        // rooms_layer.getStyle().getText().setText(feature.properties.roomnamevi);
+    });
+    // const data= await getDataUnits();
+    // data.features.map((item,idx)=>{
+    //     // console.log(item);
+    //     // console.log(units_layer.getSource().getFeatures()[idx]);
+    //     // console.log(units_layer.getSource().getFeatures()[idx].getStyle().getText());
+    //     // units_layer.getStyle().getText().setText(item.properties.name);
+    //     units_layer.getSource().forEachFeature((feature) => {
+    //         feature.set('name', 'New Value');
+    //       });
+        
+    // })
     
 
 }
@@ -303,6 +327,7 @@ async function getDataDomitory() {
 function checkPositionAndFeature(pos) {
     const closestFeature = rooms_layer.getSource().getClosestFeatureToCoordinate(pos);
     var show = true;
+    questions[0].id=closestFeature.getProperties().id;
     questions.forEach(function (item) {
         if (closestFeature.getProperties().id == item.id && !item.status) {
             closestFeature.setStyle(new ol.style.Style({
@@ -395,6 +420,7 @@ async function testAsyncStorage() {
 }
 
 function addQuestionInFeature() {
+
     map.on('click', function (event) {
         // Lấy danh sách các feature ở vị trí click
         var features = rooms_layer.getSource().getFeaturesAtCoordinate(event.coordinate);
@@ -405,6 +431,8 @@ function addQuestionInFeature() {
             console.log(feature.getProperties().roomnamevi);
         });
     });
+ 
+    
 }
 
 

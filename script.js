@@ -338,8 +338,10 @@ function checkPositionAndFeature(pos) {
             }));
             navigator.geolocation.clearWatch(watchId);
             Swal.fire({
-                title: "Vị trí "+ closestFeature.getProperties().id,
-                text: "Câu hỏi:"+ item.question,
+                // title: "Vị trí "+ closestFeature.getProperties().id,
+                // text: "Câu hỏi:"+ item.question,
+                title: "CÂU HỎI",
+                text: item.question,
                 input: 'text',
                 showCancelButton: true        
             }).then((result) => {
